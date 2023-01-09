@@ -1,9 +1,11 @@
-package com.dentist.authority;
+package com.common.authority;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@MapperScan(basePackages = {"com.common.authority.**.dao","com.common.authority.**.mapper"})
 public class AuthorityApplication {
 
     public static void main(String[] args) {

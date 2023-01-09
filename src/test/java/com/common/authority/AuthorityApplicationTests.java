@@ -1,4 +1,4 @@
-package com.dentist.authority;
+package com.common.authority;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
