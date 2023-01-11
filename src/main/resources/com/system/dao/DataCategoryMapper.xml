@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.dao.DataCategoryMapper">
+    <resultMap id="baseResultMap" type="com.system.entity.DataCategoryEntity">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="TINYINT"/>
+        <result property="category" column="category" jdbcType="VARCHAR"/>
+        <result property="dataRegion" column="data_region" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+        <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.system.entity.DataCategoryEntity">
+        insert into data_category(type, category, data_region, create_time,
+                         update_time, create_user, update_user, deleted)
+        values(
+               #{type ,jdbcType = TINYINT},
+               #{category ,jdbcType = VARCHAR},
+               #{dataRegion ,jdbcType = VARCHAR},
+               #{createTime ,jdbcType = TIMESTAMP},
+               #{updateTime ,jdbcType = TIMESTAMP},
+               #{createUser ,jdbcType = BIGINT},
+               #{updateUser ,jdbcType = BIGINT},
+               #{deleted ,jdbcType = TINYINT}
+              )
+    </insert>
+
+    <update id="update" parameterType="com.system.entity.DataCategoryEntity">
+        update data_category
+        <trim prefix="set" suffixOverrides=",">
+            <if test="type != null">type=#{type},</if>
+            <if test="category != null">category=#{category},</if>
+            <if test="dataRegion != null">data_region=#{dataRegion},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+            <if test="updateUser != null">update_user=#{updateUser},</if>
+        </trim>
+        where id = #{id, jdbcType = BIGINT}
+    </update>
+
+    <select id="getByParam" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from data_category
+        where deleted = 0
+        <include refid="queryState"/>
+        limit 1
+    </select>
+
+    <select id="listByParam" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from data_category
+        where deleted = 0
+        <include refid="queryState"/>
+    </select>
+
+    <sql id="queryState">
+        <if test="id!=null">
+            and id = #{id}
+        </if>
+        <if test="name!=null and name!=''">
+            and name = #{name}
+        </if>
+        <if test="code!=null and code!=''">
+            and code = #{code}
+        </if>
+    </sql>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        update privilege set deleted = 1 where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

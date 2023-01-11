@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.dao.UserRoleMapper">
+    <resultMap id="baseResultMap" type="com.system.entity.UserRoleEntity">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+        <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+    
+    <resultMap id="roleUser" type="com.system.vo.userrole.RoleUserResultVo">
+        <result property="roleId" column="role_id" jdbcType="BIGINT"/>
+        <collection property="userList" ofType="com.system.vo.userrole.RoleUserInfo" >
+            <result property="id" column="user_id" jdbcType="BIGINT"/>
+            <result property="account" column="account" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="age" column="age" jdbcType="TINYINT"/>
+            <result property="sex" column="sex" jdbcType="TINYINT"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+            <result property="mail" column="mail" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.system.entity.UserRoleEntity">
+        insert into user_role(user_id, role_id,create_time, update_time, create_user, update_user, deleted)
+        values(#{user_id, jdbcType = BIGINT},
+               #{role_id, jdbcType = INTEGER},
+               #{createTime ,jdbcType = TIMESTAMP},
+               #{updateTime ,jdbcType = TIMESTAMP},
+               #{createUser ,jdbcType = BIGINT},
+               #{updateUser ,jdbcType = BIGINT},
+               #{deleted ,jdbcType = TINYINT}
+              )
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into user_role(user_id, role_id,create_time, update_time, create_user, update_user, deleted)
+        values
+        <foreach collection ="userRoleEntityList" item="item" separator =",">
+            (#{item.userId, jdbcType = BIGINT},
+            #{item.roleId, jdbcType = INTEGER},
+            #{item.createTime ,jdbcType = TIMESTAMP},
+            #{item.updateTime ,jdbcType = TIMESTAMP},
+            #{item.createUser ,jdbcType = BIGINT},
+            #{item.updateUser ,jdbcType = BIGINT},
+            #{item.deleted ,jdbcType = TINYINT}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.system.entity.UserRoleEntity">
+        update user_role
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userId != null">user_id=#{userId},</if>
+            <if test="roleId != null">role_id=#{roleId},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+            <if test="updateUser != null">update_user=#{updateUser},</if>
+        </trim>
+        where id = #{id, jdbcType = BIGINT}
+    </update>
+
+    <select id="getById" parameterType="java.lang.Integer" resultMap="baseResultMap">
+        select id, user_id, role_id, create_time, update_time, create_user, update_user, deleted
+        from user_role where id = #{id}
+    </select>
+
+    <select id="getByParam" parameterType="java.util.Map" resultMap="baseResultMap">
+        select id, user_id, role_id, create_time, update_time, create_user, update_user, deleted
+        from user_role
+        where deleted = 0
+        <if test="id!=null">
+            and id = #{id}
+        </if>
+        <if test="userId!=null and userId!=''">
+            and user_id = #{userId}
+        </if>
+        <if test="roleId!=null and roleId!=''">
+            and role_id = #{roleId}
+        </if>
+    </select>
+
+    <select id="getUserByRole" parameterType="java.lang.Integer" resultType="com.system.vo.userrole.RoleUserInfo">
+        select b.id, b.account, b.name, b.age, b.sex, b.phone, b.nick_name as nickName, b.mail
+        from user_role a
+        left join user b on a.user_id = b.id
+        where a.deleted = 0 and a.role_id = #{roleId} and b.deleted = 0
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        update user_role set deleted = 1 where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByParam" parameterType="java.util.Map" >
+        update user_role set deleted = 1 where user_id = #{userId} and role_id = #{roleId}
+    </delete>
+
+    <select id="listRoleUser" parameterType="java.util.Map" resultMap="roleUser">
+        select a.role_id, b.id, b.account, b.name, b.age, b.sex, b.phone, b.nick_name as nickName, b.mail
+        from user_role a
+        left join user b on a.user_id = b.id
+        left join role c on a.role_id = c.id
+        where a.deleted = 0 and b.deleted = 0
+        <if test="roleName!=null and roleName!=''">
+            and c.name = #{roleName}
+        </if>
+        <if test="parentId!=null and parentId!=''">
+            and c.parent_id = #{parentId}
+        </if>
+    </select>
+
+</mapper>

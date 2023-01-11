@@ -4,10 +4,14 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://mysql_1:3306/month_clear?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://mysql_1:3306/dentist_office?useUnicode=true&characterEncoding=utf8
     username: root
     password: 123456
   #  这个mvc的配置是springboot2.6.1不支持swagger3的折衷配置，后面考虑升级Springboot版本或降级版本
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+logging:
+  level:
+    java.sql: DEBUG
+    org.mybatis.spring: DEBUG

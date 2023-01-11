@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.dao.PrivilegeMenuFunctionMapper">
+    <resultMap id="baseResultMap" type="com.system.entity.PrivilegeMenuFunctionEntity">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="privilegeId" column="privilege_id" jdbcType="INTEGER"/>
+        <result property="menuFunctionId" column="menu_function_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+        <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.system.entity.PrivilegeMenuFunctionEntity">
+        insert into privilege_menu_func(privilege_id, menu_function_id,create_time,
+                         update_time, create_user, update_user, deleted)
+        values(
+               #{privilegeId ,jdbcType = INTEGER},
+               #{menuFunctionId ,jdbcType = INTEGER},
+               #{createTime ,jdbcType = TIMESTAMP},
+               #{updateTime ,jdbcType = TIMESTAMP},
+               #{createUser ,jdbcType = BIGINT},
+               #{updateUser ,jdbcType = BIGINT},
+               #{deleted ,jdbcType = TINYINT}
+              )
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into privilege_menu_func(privilege_id, menu_function_id,create_time,
+        update_time, create_user, update_user, deleted)
+        values
+        <foreach collection ="list" item="item" separator =",">
+            (
+            #{item.privilegeId ,jdbcType = INTEGER},
+            #{item.menuFunctionId ,jdbcType = INTEGER},
+            #{item.createTime ,jdbcType = TIMESTAMP},
+            #{item.updateTime ,jdbcType = TIMESTAMP},
+            #{item.createUser ,jdbcType = BIGINT},
+            #{item.updateUser ,jdbcType = BIGINT},
+            #{item.deleted ,jdbcType = TINYINT}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.system.entity.PrivilegeMenuFunctionEntity">
+        update privilege_menu_func
+        <trim prefix="set" suffixOverrides=",">
+            <if test="privilegeId != null">privilege_id=#{privilegeId},</if>
+            <if test="menuFunctionId != null">menu_function_id=#{menuFunctionId},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+            <if test="updateUser != null">update_user=#{updateUser},</if>
+        </trim>
+        where id = #{id, jdbcType = BIGINT}
+    </update>
+
+    <select id="getByParam" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from privilege_menu_func
+        where deleted = 0
+        <include refid="queryState"/>
+        limit 1
+    </select>
+
+    <select id="listByParam" parameterType="java.util.Map" resultMap="baseResultMap">
+        select * from privilege_menu_func
+        where deleted = 0
+        <include refid="queryState"/>
+    </select>
+
+    <sql id="queryState">
+        <if test="id!=null">
+            and id = #{id}
+        </if>
+        <if test="privilegeId!=null and privilegeId!=''">
+            and privilege_id = #{privilegeId}
+        </if>
+        <if test="menuFunctionId!=null and menuFunctionId!=''">
+            and menu_function_id = #{menuFunctionId}
+        </if>
+    </sql>
+
+
+    <delete id="delete" parameterType="java.util.List">
+        update privilege_menu_func set deleted = 1 where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByParam" parameterType="java.lang.Integer">
+        update privilege_menu_func set deleted = 1 where privilege_id = #{privilegeId}
+    </delete>
+
+</mapper>

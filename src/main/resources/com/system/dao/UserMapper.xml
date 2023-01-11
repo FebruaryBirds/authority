@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.dao.UserMapper">
+    <resultMap id="baseResultMap" type="com.system.entity.UserEntity">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="account" column="account" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="TINYINT"/>
+        <result property="sex" column="sex" jdbcType="TINYINT"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+        <result property="mail" column="mail" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+        <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.system.entity.UserEntity">
+        insert into user(account, password, name, age, sex, phone, nick_name, mail, create_time,
+                         update_time, create_user, update_user, deleted)
+        values(#{account, jdbcType = VARCHAR},
+               #{password,jdbcType = VARCHAR},
+               #{name ,jdbcType = VARCHAR},
+               #{age ,jdbcType = TINYINT},
+               #{sex ,jdbcType = TINYINT},
+               #{phone ,jdbcType = VARCHAR},
+               #{nickName ,jdbcType = VARCHAR},
+               #{mail ,jdbcType = VARCHAR},
+               #{createTime ,jdbcType = TIMESTAMP},
+               #{updateTime ,jdbcType = TIMESTAMP},
+               #{createUser ,jdbcType = BIGINT},
+               #{updateUser ,jdbcType = BIGINT},
+               #{deleted ,jdbcType = TINYINT}
+              )
+    </insert>
+
+    <update id="update" parameterType="com.system.entity.UserEntity">
+        update user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="account != null">account=#{account},</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="password != null">password=#{password},</if>
+            <if test="age != null">age=#{age},</if>
+            <if test="sex != null">sex=#{sex},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="nickName != null">nick_name=#{nickName},</if>
+            <if test="mail != null">mail=#{mail},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+            <if test="updateUser != null">update_user=#{updateUser},</if>
+        </trim>
+        where id = #{id, jdbcType = BIGINT}
+    </update>
+
+    <select id="getById" parameterType="java.lang.Integer" resultMap="baseResultMap">
+        select id,account, password, name, age, sex, phone, nick_name, mail,create_time,
+               update_time, create_user, update_user, deleted
+        from user where id = #{id}
+    </select>
+
+    <select id="getByParam" parameterType="java.util.Map" resultMap="baseResultMap">
+        select id,account, password, name, age, sex, phone, nick_name, mail,create_time,
+               update_time, create_user, update_user, deleted
+        from user
+        where deleted = 0
+        <if test="id!=null">
+            and id = #{id}
+        </if>
+        <if test="name!=null and name!=''">
+            and name = #{name}
+        </if>
+        <if test="account!=null and account!=''">
+            and account = #{account}
+        </if>
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        update user set deleted = 1 where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>
