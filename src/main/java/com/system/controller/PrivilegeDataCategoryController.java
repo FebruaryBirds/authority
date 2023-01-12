@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class PrivilegeDataCategoryController {
     @ApiOperation(value = "添加角色权限")
     @PostMapping
     @ResponseBody
-    public ResultData add(PrivilegeDataCategoryAddParamVo privilegeDataCategoryAddParamVo) {
+    public ResultData add(@RequestBody @Valid PrivilegeDataCategoryAddParamVo privilegeDataCategoryAddParamVo) {
         int i = privilegeDataCategoryService.add(privilegeDataCategoryAddParamVo);
         if (i< 1) {
             return ResultUtils.error("添加失败");
@@ -40,7 +41,7 @@ public class PrivilegeDataCategoryController {
     @PostMapping("/update")
     @ResponseBody
     @AuthPassPort
-    public ResultData update(PrivilegeDataCategoryAddParamVo privilegeDataCategoryAddParamVo) {
+    public ResultData update(@RequestBody @Valid PrivilegeDataCategoryAddParamVo privilegeDataCategoryAddParamVo) {
         int i = privilegeDataCategoryService.update(privilegeDataCategoryAddParamVo);
         if (i< 1) {
             return ResultUtils.error("修改失败");

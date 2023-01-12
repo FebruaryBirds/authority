@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 @ApiModel
 public class MenuFunctionAddParamVo {
+    @ApiModelProperty(value = "主键id")
+    private Long id;
     @ApiModelProperty(value = "菜单/功能名称")
     private String name;
     @ApiModelProperty(value = "父级菜单ID")

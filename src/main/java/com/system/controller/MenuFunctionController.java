@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class MenuFunctionController {
     @ApiOperation(value = "添加菜单/功能")
     @PostMapping
     @ResponseBody
-    public ResultData add(MenuFunctionAddParamVo menuFunctionAddParamVo) {
+    public ResultData add(@RequestBody @Valid MenuFunctionAddParamVo menuFunctionAddParamVo) {
         int i = menuFunctionService.add(menuFunctionAddParamVo);
         if (i< 1) {
             return ResultUtils.error("添加失败");
@@ -40,7 +41,7 @@ public class MenuFunctionController {
     @PostMapping("/update")
     @ResponseBody
     @AuthPassPort
-    public ResultData update(MenuFunctionAddParamVo menuFunctionAddParamVo) {
+    public ResultData update(@RequestBody @Valid MenuFunctionAddParamVo menuFunctionAddParamVo) {
         int i = menuFunctionService.update(menuFunctionAddParamVo);
         if (i< 1) {
             return ResultUtils.error("修改失败");

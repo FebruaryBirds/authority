@@ -27,7 +27,7 @@
                               create_time, update_time, create_user, update_user, deleted)
         values(
                #{name ,jdbcType = VARCHAR},
-               #{parent_id ,jdbcType = INTEGER},
+               #{parentId ,jdbcType = INTEGER},
                #{code ,jdbcType = VARCHAR},
                #{searchCode ,jdbcType = VARCHAR},
                #{fullName ,jdbcType = VARCHAR},

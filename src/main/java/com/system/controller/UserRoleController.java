@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Api(tags = "用户角色接口")
 @RestController
 @RequestMapping("/userRole")
@@ -22,7 +24,7 @@ public class UserRoleController {
     @ApiOperation(value = "用户添加角色")
     @PostMapping("/userAddRole")
     @ResponseBody
-    public ResultData userAddRole(UserRoleParamVo userRoleParamVo) {
+    public ResultData userAddRole(@RequestBody @Valid UserRoleParamVo userRoleParamVo) {
         int i = userRoleService.userAddRole(userRoleParamVo);
         if (i< 1) {
             return ResultUtils.error("注册失败");
@@ -33,7 +35,7 @@ public class UserRoleController {
     @ApiOperation(value = "角色添加用户")
     @PostMapping("/roleAddUser")
     @ResponseBody
-    public ResultData roleAddUser(RoleUserParamVo roleUserParamVo) {
+    public ResultData roleAddUser(@RequestBody @Valid RoleUserParamVo roleUserParamVo) {
         int i = userRoleService.roleAddUser(roleUserParamVo);
         if (i< 1) {
             return ResultUtils.error("注册失败");

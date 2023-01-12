@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class RoleController {
     @ApiOperation(value = "添加角色")
     @PostMapping
     @ResponseBody
-    public ResultData add(RoleParamVo roleParamVo) {
+    public ResultData add(@RequestBody @Valid RoleParamVo roleParamVo) {
         int i = roleService.add(roleParamVo);
         if (i< 1) {
             return ResultUtils.error("注册失败");
@@ -39,7 +40,7 @@ public class RoleController {
     @PostMapping("/update")
     @ResponseBody
     @AuthPassPort
-    public ResultData update(RoleParamVo roleParamVo) {
+    public ResultData update(@RequestBody @Valid RoleParamVo roleParamVo) {
         int i = roleService.update(roleParamVo);
         if (i< 1) {
             return ResultUtils.error("注册失败");

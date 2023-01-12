@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class RolePrivilegeController {
     @ApiOperation(value = "添加角色权限")
     @PostMapping
     @ResponseBody
-    public ResultData add(RolePrivilegeAddParamVo rolePrivilegeAddParamVo) {
+    public ResultData add(@RequestBody @Valid RolePrivilegeAddParamVo rolePrivilegeAddParamVo) {
         int i = rolePrivilegeService.add(rolePrivilegeAddParamVo);
         if (i< 1) {
             return ResultUtils.error("添加失败");
@@ -40,7 +41,7 @@ public class RolePrivilegeController {
     @PostMapping("/update")
     @ResponseBody
     @AuthPassPort
-    public ResultData update(RolePrivilegeAddParamVo rolePrivilegeAddParamVo) {
+    public ResultData update(@RequestBody @Valid RolePrivilegeAddParamVo rolePrivilegeAddParamVo) {
         int i = rolePrivilegeService.update(rolePrivilegeAddParamVo);
         if (i< 1) {
             return ResultUtils.error("修改失败");

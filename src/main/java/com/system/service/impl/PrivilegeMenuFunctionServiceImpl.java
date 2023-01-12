@@ -34,6 +34,7 @@ public class PrivilegeMenuFunctionServiceImpl implements PrivilegeMenuFunctionSe
             privilegeMenuFunctionEntity.setPrivilegeId(privilegeId);
             privilegeMenuFunctionEntity.setMenuFunctionId(menuFunctionId);
             setProperties(privilegeMenuFunctionEntity, true);
+            list.add(privilegeMenuFunctionEntity);
         }
         return mapper.batchInsert(list);
     }

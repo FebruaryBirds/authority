@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Api(tags = "用户接口")
 @RestController
 @RequestMapping("/user")
@@ -23,7 +25,7 @@ public class UserController {
     @PostMapping("/register")
     @ResponseBody
     @AuthPassPort
-    public ResultData register(UserRegisterParamVo userRegisterParamVo) {
+    public ResultData register(@RequestBody @Valid UserRegisterParamVo userRegisterParamVo) {
         int i = userService.register(userRegisterParamVo);
         if (i< 1) {
             return ResultUtils.error("注册失败");
@@ -34,7 +36,7 @@ public class UserController {
     @ApiOperation(value = "修改用户")
     @PostMapping("/update")
     @ResponseBody
-    public ResultData update(UserRegisterParamVo userRegisterParamVo) {
+    public ResultData update(@RequestBody @Valid UserRegisterParamVo userRegisterParamVo) {
         int i = userService.update(userRegisterParamVo);
         if (i< 1) {
             return ResultUtils.error("注册失败");

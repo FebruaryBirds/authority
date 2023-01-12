@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class DataCategoryController {
     @ApiOperation(value = "添加数据归属")
     @PostMapping
     @ResponseBody
-    public ResultData add(DataCategoryAddParamVo paramVo) {
+    public ResultData add(@RequestBody @Valid DataCategoryAddParamVo paramVo) {
         int i = service.add(paramVo);
         if (i< 1) {
             return ResultUtils.error("添加失败");
@@ -40,7 +41,7 @@ public class DataCategoryController {
     @PostMapping("/update")
     @ResponseBody
     @AuthPassPort
-    public ResultData update(DataCategoryAddParamVo paramVo) {
+    public ResultData update(@RequestBody @Valid DataCategoryAddParamVo paramVo) {
         int i = service.update(paramVo);
         if (i< 1) {
             return ResultUtils.error("修改失败");

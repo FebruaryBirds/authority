@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class PrivilegeMenuFunctionController {
     @Autowired
     private PrivilegeMenuFunctionService privilegeMenuFunctionService;
 
-    @ApiOperation(value = "添加角色权限")
+    @ApiOperation(value = "添加权限菜单")
     @PostMapping
     @ResponseBody
-    public ResultData add(PrivilegeMenuFunctionAddParamVo privilegeMenuFunctionVo) {
+    public ResultData add(@RequestBody @Valid PrivilegeMenuFunctionAddParamVo privilegeMenuFunctionVo) {
         int i = privilegeMenuFunctionService.add(privilegeMenuFunctionVo);
         if (i< 1) {
             return ResultUtils.error("添加失败");
@@ -40,7 +41,7 @@ public class PrivilegeMenuFunctionController {
     @PostMapping("/update")
     @ResponseBody
     @AuthPassPort
-    public ResultData update(PrivilegeMenuFunctionAddParamVo privilegeMenuFunctionVo) {
+    public ResultData update(@RequestBody @Valid PrivilegeMenuFunctionAddParamVo privilegeMenuFunctionVo) {
         int i = privilegeMenuFunctionService.update(privilegeMenuFunctionVo);
         if (i< 1) {
             return ResultUtils.error("修改失败");

@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@ApiModel(value = "PrivilegeMenuFunctionVo", description = "权限菜单增改接口参数")
+@ApiModel(value = "PrivilegeMenuFunctionAddParamVo", description = "权限菜单增改接口参数")
 public class PrivilegeMenuFunctionAddParamVo {
     @ApiModelProperty(value = "权限ID")
     private Integer privilegeId;
